@@ -1,7 +1,7 @@
 import reflex as rx
 
 config = rx.Config(
-    app_name="reflex_fastapi_examples",
+    app_name="app",
     plugins=[
         rx.plugins.SitemapPlugin(),
     ],
