@@ -1,5 +1,9 @@
 version = 1
 requires-python = ">=3.12"
+resolution-markers = [
+    "python_full_version < '3.13'",
+    "python_full_version >= '3.13'",
+]
 
 [[package]]
 name = "alembic"
@@ -592,6 +596,18 @@ wheels = [
 ]
 
 [[package]]
+name = "python-dateutil"
+version = "2.9.0.post0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892 },
+]
+
+[[package]]
 name = "python-dotenv"
 version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -710,6 +726,7 @@ dependencies = [
     { name = "python-multipart" },
     { name = "reflex" },
     { name = "sqlmodel" },
+    { name = "visidata" },
     { name = "websockets" },
 ]
 
@@ -722,6 +739,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "reflex", specifier = ">=0.8.2" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
+    { name = "visidata", specifier = ">=3.2" },
     { name = "websockets", specifier = ">=15.0.1" },
 ]
 
@@ -851,6 +869,15 @@ wheels = [
 ]
 
 [[package]]
+name = "six"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050 },
+]
+
+[[package]]
 name = "sniffio"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -899,6 +926,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/86/4b/c2ad0496f5bdc6073d9b4cef52be9c04f2b37a5773441cc6600b1857648b/sqlmodel-0.0.24.tar.gz", hash = "sha256:cc5c7613c1a5533c9c7867e1aab2fd489a76c9e8a061984da11b4e613c182423", size = 116780 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/16/91/484cd2d05569892b7fef7f5ceab3bc89fb0f8a8c0cde1030d383dbc5449c/sqlmodel-0.0.24-py3-none-any.whl", hash = "sha256:6778852f09370908985b667d6a3ab92910d0d5ec88adcaf23dbc242715ff7193", size = 28622 },
+]
+
+[[package]]
+name = "standard-mailcap"
+version = "3.13.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/e8/672bd621c146b89667a2bfaa58a1384db13cdd62bb7722ddb8d672bf7a75/standard_mailcap-3.13.0.tar.gz", hash = "sha256:19ed7955dbeaccb35e8bb05b2b5443ce55c1f932a8cbe7a5c13d42f9db4f499a", size = 8797 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/ed/a49825f8ff1bd4f1f77fb631441c00c8e831a4a3decacd34f1cf3e24bb44/standard_mailcap-3.13.0-py3-none-any.whl", hash = "sha256:4f509e11cb5a4700e91118630447643398b183ff3bb734011c8c030b3d671f0a", size = 6185 },
 ]
 
 [[package]]
@@ -1013,6 +1049,20 @@ wheels = [
 ]
 
 [[package]]
+name = "visidata"
+version = "3.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-dateutil" },
+    { name = "standard-mailcap", marker = "python_full_version >= '3.13'" },
+    { name = "windows-curses", marker = "platform_system == 'Windows'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/06/5a/40f0546a4a2525b30df9d157719cb072b390fde4dc8e5cff06d5b8605871/visidata-3.2.tar.gz", hash = "sha256:7a81ea28beefd8681bca573a056f9184c244ba79dc184a764cd8cf26919113e2", size = 13181981 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/dc/7b/1f5d26a1e5de20d7c582163371a85554ece7aaf066de9b665d3b8a12fc3d/visidata-3.2-py3-none-any.whl", hash = "sha256:2ff30f2599a1fad312271eaaaa3ea798dafba0e1af4ca3988a86c113c8ce3ec0", size = 543968 },
+]
+
+[[package]]
 name = "watchfiles"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1108,6 +1158,17 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/86/eb/20b6cdf273913d0ad05a6a14aed4b9a85591c18a987a3d47f20fa13dcc47/websockets-15.0.1-cp313-cp313-win32.whl", hash = "sha256:ba9e56e8ceeeedb2e080147ba85ffcd5cd0711b89576b83784d8605a7df455fa", size = 176393 },
     { url = "https://files.pythonhosted.org/packages/1b/6c/c65773d6cab416a64d191d6ee8a8b1c68a09970ea6909d16965d26bfed1e/websockets-15.0.1-cp313-cp313-win_amd64.whl", hash = "sha256:e09473f095a819042ecb2ab9465aee615bd9c2028e4ef7d933600a8401c79561", size = 176837 },
     { url = "https://files.pythonhosted.org/packages/fa/a8/5b41e0da817d64113292ab1f8247140aac61cbf6cfd085d6a0fa77f4984f/websockets-15.0.1-py3-none-any.whl", hash = "sha256:f7a866fbc1e97b5c617ee4116daaa09b722101d4a3c170c787450ba409f9736f", size = 169743 },
+]
+
+[[package]]
+name = "windows-curses"
+version = "2.4.1"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f4/99/60f34e51514c82631aa5c6d21eab88ce1701562de9844608411e39462a46/windows_curses-2.4.1-cp312-cp312-win32.whl", hash = "sha256:bdbe7d58747408aef8a9128b2654acf6fbd11c821b91224b9a046faba8c6b6ca", size = 71489 },
+    { url = "https://files.pythonhosted.org/packages/62/8f/d908bcab1954375b156a9300fa86ceccb110f39457cd6fd59c72777626ab/windows_curses-2.4.1-cp312-cp312-win_amd64.whl", hash = "sha256:5c9c2635faf171a229caca80e1dd760ab00db078e2a285ba2f667bbfcc31777c", size = 81777 },
+    { url = "https://files.pythonhosted.org/packages/25/a0/e8d074f013117633f6b502ca123ecfc377fe0bd36818fe65e8935c91ca9c/windows_curses-2.4.1-cp313-cp313-win32.whl", hash = "sha256:05d1ca01e5199a435ccb6c8c2978df4a169cdff1ec99ab15f11ded9de8e5be26", size = 71390 },
+    { url = "https://files.pythonhosted.org/packages/2b/4b/2838a829b074a68c570d54ae0ae8539979657d3e619a4dc5a4b03eb69745/windows_curses-2.4.1-cp313-cp313-win_amd64.whl", hash = "sha256:8cf653f8928af19c103ae11cfed38124f418dcdd92643c4cd17239c0cec2f9da", size = 81636 },
 ]
 
 [[package]]

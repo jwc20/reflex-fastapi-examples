@@ -12,5 +12,6 @@ dependencies = [
     "python-multipart>=0.0.20",
     "reflex>=0.8.2",
     "sqlmodel>=0.0.24",
+    "visidata>=3.2",
     "websockets>=15.0.1",
 ]
