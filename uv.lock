@@ -719,6 +719,7 @@ name = "reflex-fastapi-examples"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "bcrypt" },
     { name = "broadcaster" },
     { name = "fastapi", extra = ["standard"] },
     { name = "httpx" },
@@ -726,6 +727,7 @@ dependencies = [
     { name = "pyjwt" },
     { name = "python-multipart" },
     { name = "reflex" },
+    { name = "reflex-local-auth" },
     { name = "sqlmodel" },
     { name = "visidata" },
     { name = "websockets" },
@@ -733,6 +735,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "bcrypt", specifier = ">=4.3.0" },
     { name = "broadcaster", specifier = ">=0.3.1" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.1" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -740,6 +743,7 @@ requires-dist = [
     { name = "pyjwt", specifier = ">=2.10.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "reflex", specifier = ">=0.8.2" },
+    { name = "reflex-local-auth", specifier = ">=0.3.0" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
     { name = "visidata", specifier = ">=3.2" },
     { name = "websockets", specifier = ">=15.0.1" },
@@ -761,6 +765,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a2/73/171b95e651081c1a6c25afb5fe931067053722a27a67560e455806035893/reflex_hosting_cli-0.1.52.tar.gz", hash = "sha256:0a3166245360a5c027eaddc1ae260d053fb3486a85c1d66016e15d265f07e369", size = 34598 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/65/88/e9393a114e4345c2e64a93a19234e3aac29a6ca2f698eca4c21092a4166f/reflex_hosting_cli-0.1.52-py3-none-any.whl", hash = "sha256:61d25311b19158dbd7d133ca27ccafdbd155fcbf01ba4036c0b7edc35766c70f", size = 43798 },
+]
+
+[[package]]
+name = "reflex-local-auth"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "bcrypt" },
+    { name = "reflex" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7e/78/8ef7227a6d7df3e9b80ed1e84c8b682a2b5627575417e77ab939e220b8d7/reflex_local_auth-0.3.0.tar.gz", hash = "sha256:2e630d8f32c5b2c15ecbb8e3519cdde920d79c720dbe843110437b3a718f8ec0", size = 19739 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d1/4a/77f50b8610059f31365d25a5f8d3fe7500ea1b35792d935fb01f8bfde585/reflex_local_auth-0.3.0-py3-none-any.whl", hash = "sha256:708083afde008d265677c601986f0301af91c399ff41d14a199e050cb3e5939d", size = 12054 },
 ]
 
 [[package]]

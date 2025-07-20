@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
+from dataclasses import dataclass
+import bcrypt
 
 import reflex as rx
 import jwt
@@ -19,7 +21,14 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
+# https://github.com/pyca/bcrypt/issues/684#issuecomment-2430047176
+@dataclass
+class SolveBugBcryptWarning:
+    __version__: str = getattr(bcrypt, "__version__")
+
+
 # Password hashing
+setattr(bcrypt, "__about__", SolveBugBcryptWarning())
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -340,15 +349,19 @@ class FormState(rx.State):
         async with httpx.AsyncClient() as client:
             response = await client.post("http://127.0.0.1:8001/token", data=form_data)
             # response.raise_for_status()
-            print(response.json())
+            if response.status_code == 200:
+                return rx.redirect("http://localhost:3001/")
 
     @rx.event
     async def handle_signup(self, form_data: dict):
-        
         async with httpx.AsyncClient() as client:
-            response = await client.post("http://127.0.0.1:8001/register", json=form_data)
+            response = await client.post(
+                "http://127.0.0.1:8001/register", json=form_data
+            )
             # response.raise_for_status()
             print(response.json())
+            if response.status_code == 200:
+                return rx.redirect("http://localhost:3001/login")
 
 
 def index() -> rx.Component:
@@ -370,34 +383,58 @@ def index() -> rx.Component:
 
 def login() -> rx.Component:
     return rx.container(
-        rx.form(
-            rx.vstack(
-                rx.heading("Login"),
-                rx.input(placeholder="username", name="username"),
-                rx.input(placeholder="password", name="password"),
-                rx.button("Login", type="submit"),
-                rx.link("go back home", href="/"),
+        rx.center(
+            rx.form(
+                rx.vstack(
+                    rx.heading("Login"),
+                    rx.input(placeholder="username", name="username"),
+                    rx.input(placeholder="password", name="password", type="password"),
+                    rx.button("Login", type="submit"),
+                    rx.link("go back home", href="/"),
+                ),
+                on_submit=FormState.handle_login,
+                width="50%",
+                display="content",
             ),
-            on_submit=FormState.handle_login,
-        )
+            box_sizing="content-box",
+            max_inline_size="var(--measure)",
+            margin_inline="auto",
+            display="flex",
+            flex_direction="column",
+            align_items="center",
+            justify="center",
+            min_height="85vh",
+        ),
     )
 
 
 def signup() -> rx.Component:
     return rx.container(
-        rx.form(
-            rx.vstack(
-                rx.heading("Sign Up"),
-                rx.input(placeholder="username", name="username"),
-                rx.input(placeholder="password", name="password"),
-                rx.input(placeholder="email", name="email"),
-                rx.input(placeholder="full name", name="full_name"),
-                # rx.input(placeholder="password again", name="password_again"),
-                rx.button("Sign up", type="submit"),
-                rx.link("go back home", href="/"),
+        rx.center(
+            rx.form(
+                rx.vstack(
+                    rx.heading("Sign Up"),
+                    rx.input(placeholder="username", name="username"),
+                    rx.input(placeholder="password", name="password", type="password"),
+                    # rx.input(placeholder="email", name="email"),
+                    # rx.input(placeholder="full name", name="full_name"),
+                    # rx.input(placeholder="password again", name="password_again"),
+                    rx.button("Sign up", type="submit"),
+                    rx.link("go back home", href="/"),
+                ),
+                on_submit=FormState.handle_signup,
+                width="50%",
+                display="content",
             ),
-            on_submit=FormState.handle_signup,
-        )
+            box_sizing="content-box",
+            max_inline_size="var(--measure)",
+            margin_inline="auto",
+            display="flex",
+            flex_direction="column",
+            align_items="center",
+            justify="center",
+            min_height="85vh",
+        ),
     )
 
 

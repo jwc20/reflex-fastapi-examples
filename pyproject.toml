@@ -5,12 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "bcrypt>=4.3.0",
     "broadcaster>=0.3.1",
     "fastapi[standard]>=0.116.1",
     "httpx>=0.28.1",
     "passlib[bcrypt]>=1.7.4",
     "pyjwt>=2.10.1",
     "python-multipart>=0.0.20",
+    "reflex-local-auth>=0.3.0",
     "reflex>=0.8.2",
     "sqlmodel>=0.0.24",
     "visidata>=3.2",
