@@ -721,6 +721,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "broadcaster" },
     { name = "fastapi", extra = ["standard"] },
+    { name = "httpx" },
     { name = "passlib", extra = ["bcrypt"] },
     { name = "pyjwt" },
     { name = "python-multipart" },
@@ -734,6 +735,7 @@ dependencies = [
 requires-dist = [
     { name = "broadcaster", specifier = ">=0.3.1" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.1" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7.4" },
     { name = "pyjwt", specifier = ">=2.10.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },

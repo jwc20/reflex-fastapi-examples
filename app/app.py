@@ -11,6 +11,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from starlette.middleware.cors import CORSMiddleware
+import httpx
 
 SECRET_KEY = "d1476829cf5d3ea5326220b34a3d6ab78031d28f6b75d2575d9177f4e21a7fa4"
 ALGORITHM = "HS256"
@@ -338,23 +339,74 @@ class State(rx.State):
     """The app state."""
 
 
+class FormState(rx.State):
+
+    @rx.event
+    async def handle_login(self, form_data: dict):
+        async with httpx.AsyncClient() as client:
+            response = await client.post("http://127.0.0.1:8000/token", data=form_data)
+            # response.raise_for_status()
+            print(response.json())
+
+    @rx.event
+    async def handle_signup(self, form_data: dict):
+        async with httpx.AsyncClient() as client:
+            response = await client.post("http://127.0.0.1:8000/register", data=form_data)
+            # response.raise_for_status()
+            print(response.json())
+
+
 def index() -> rx.Component:
     # Welcome Page (Index)
     return rx.container(
         rx.color_mode.button(position="top-right"),
-        rx.vstack(
-            rx.heading("Welcome to Reflex!", size="9"),
-            rx.link(
-                rx.button("Check out our docs!"),
-                href="https://reflex.dev/docs/getting-started/introduction/",
-                is_external=True,
+        rx.center(
+            rx.vstack(
+                rx.heading("Welcome to Reflex!", size="9"),
+                rx.link("login page", href="/login"),
+                rx.link("signup pagae", href="/signup"),
+                spacing="5",
+                justify="center",
+                min_height="85vh",
             ),
-            spacing="5",
-            justify="center",
-            min_height="85vh",
         ),
     )
 
 
+def login() -> rx.Component:
+    return rx.container(
+        rx.form(
+            rx.vstack(
+                rx.heading("Login"),
+                rx.input(placeholder="username", name="username"),
+                rx.input(placeholder="password", name="password"),
+                rx.button("Login", type="submit"),
+                rx.link("go back home", href="/"),
+            ),
+            on_submit=FormState.handle_login,
+        )
+    )
+
+
+def signup() -> rx.Component:
+    return rx.container(
+        rx.form(
+            rx.vstack(
+                rx.heading("Sign Up"),
+                rx.input(placeholder="username", name="username"),
+                rx.input(placeholder="password", name="password"),
+                rx.input(placeholder="email", name="email"),
+                rx.input(placeholder="full name", name="full_name"),
+                # rx.input(placeholder="password again", name="password_again"),
+                rx.button("Sign up", type="submit"),
+                rx.link("go back home", href="/"),
+            ),
+            on_submit=FormState.handle_signup,
+        )
+    )
+
+
 app = rx.App(api_transformer=[fastapi_app, add_cors_middleware])
-app.add_page(index)
+app.add_page(index, route="/")
+app.add_page(login, route="/login")
+app.add_page(signup, route="/signup")
