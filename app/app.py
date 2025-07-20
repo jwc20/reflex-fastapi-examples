@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from starlette.middleware.cors import CORSMiddleware
 import httpx
+from starlette.middleware import Middleware
 
 SECRET_KEY = "d1476829cf5d3ea5326220b34a3d6ab78031d28f6b75d2575d9177f4e21a7fa4"
 ALGORITHM = "HS256"
@@ -38,7 +39,6 @@ class UserBase(SQLModel):
     username: str = Field(unique=True, index=True)
     email: str | None = Field(default=None)
     full_name: str | None = Field(default=None)
-    age: int | None = Field(default=None, index=True)
     disabled: bool = Field(default=False)
 
 
@@ -51,7 +51,6 @@ class UserCreate(BaseModel):
     username: str
     email: str | None = None
     full_name: str | None = None
-    age: int | None = None
     password: str
 
 
@@ -60,14 +59,12 @@ class UserPublic(BaseModel):
     username: str
     email: str | None = None
     full_name: str | None = None
-    age: int | None = None
     disabled: bool
 
 
 class UserUpdate(BaseModel):
     email: str | None = None
     full_name: str | None = None
-    age: int | None = None
     disabled: bool | None = None
     password: str | None = None
 
@@ -192,12 +189,12 @@ def create_db_and_tables():
 @fastapi_app.post("/register", response_model=UserPublic)
 def register(user: UserCreate, session: SessionDep):
     # Check if user already exists
-    # db_user = get_user_by_username(session, user.username)
-    # if db_user:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_400_BAD_REQUEST,
-    #         detail="Username already registered",
-    #     )
+    db_user = get_user_by_username(session, user.username)
+    if db_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already registered",
+        )
 
     # Create new user
     hashed_password = get_password_hash(user.password)
@@ -205,7 +202,6 @@ def register(user: UserCreate, session: SessionDep):
         username=user.username,
         email=user.email,
         full_name=user.full_name,
-        age=user.age,
         hashed_password=hashed_password,
     )
     session.add(db_user)
@@ -253,9 +249,7 @@ def create_user(user: UserCreate, session: SessionDep, current_user: CurrentUser
         username=user.username,
         email=user.email,
         full_name=user.full_name,
-        age=user.age,
         hashed_password=hashed_password,
-        secret_name=user.secret_name,
     )
     session.add(db_user)
     session.commit()
@@ -344,14 +338,15 @@ class FormState(rx.State):
     @rx.event
     async def handle_login(self, form_data: dict):
         async with httpx.AsyncClient() as client:
-            response = await client.post("http://127.0.0.1:8000/token", data=form_data)
+            response = await client.post("http://127.0.0.1:8001/token", data=form_data)
             # response.raise_for_status()
             print(response.json())
 
     @rx.event
     async def handle_signup(self, form_data: dict):
+        
         async with httpx.AsyncClient() as client:
-            response = await client.post("http://127.0.0.1:8000/register", data=form_data)
+            response = await client.post("http://127.0.0.1:8001/register", json=form_data)
             # response.raise_for_status()
             print(response.json())
 
@@ -406,7 +401,7 @@ def signup() -> rx.Component:
     )
 
 
-app = rx.App(api_transformer=[fastapi_app, add_cors_middleware])
+app = rx.App(api_transformer=[fastapi_app, add_cors_middleware, add_logging_middleware])
 app.add_page(index, route="/")
 app.add_page(login, route="/login")
 app.add_page(signup, route="/signup")
